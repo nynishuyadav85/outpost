@@ -4,6 +4,8 @@ import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import AppShell from "@/components/AppShell";
+import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/ui/themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,18 +24,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <TooltipProvider>
-          <AppShell>
-            {children}
-          </AppShell>
-        </TooltipProvider>
-        <Toaster richColors />
-      </body>
-    </html>
+    <ClerkProvider appearance={{
+      theme: dark,
+      variables: { colorPrimary: "oklch(0.74 0.16 55)" }
+    }}>
+      <html
+        lang="en"
+        className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      >
+        <body className="min-h-full flex flex-col">
+          <TooltipProvider>
+            <AppShell>
+              {children}
+            </AppShell>
+          </TooltipProvider>
+          <Toaster richColors />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
